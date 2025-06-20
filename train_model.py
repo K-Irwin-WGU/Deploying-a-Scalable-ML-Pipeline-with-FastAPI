@@ -22,6 +22,13 @@ data = pd.read_csv(data_path)
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
 train, test = train_test_split(data, test_size=0.20)
 
+# Save Data to CSV
+train_path = data_path = os.path.join(project_path, "data", "train_data.csv")
+test_path = data_path = os.path.join(project_path, "data", "test_data.csv")
+
+train.to_csv(train_path, index=False)
+test.to_csv(test_path, index=False)
+
 # DO NOT MODIFY
 cat_features = [
     "workclass",
