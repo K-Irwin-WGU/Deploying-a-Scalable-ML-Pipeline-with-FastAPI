@@ -14,8 +14,7 @@ The model is intended for academics or research purposes.
 The training data is based on an 80% split of the census.csv file extracted from the US Census database.
 The dataset consists of 26048 rows with 15 features.
 
-###   Column          Non-Null Count  Dtype 
----  ------          --------------  ----- 
+####   Column,          Non-Null Count & Dtype 
 - 0   age             26048 non-null  int64 
 - 1   workclass       26048 non-null  object
 - 2   fnlgt           26048 non-null  int64 
@@ -36,8 +35,7 @@ The dataset consists of 26048 rows with 15 features.
 The testing data is based on a 20% split of the census.csv file extracted from the US Census database.
 The dataset consists of 6513 rows with 15 features.
 
-###   Column          Non-Null Count  Dtype 
----  ------          --------------  ----- 
+####   Column,         Non-Null Count & Dtype 
 - 0   age             6513 non-null   int64 
 - 1   workclass       6513 non-null   object
 - 2   fnlgt           6513 non-null   int64 
