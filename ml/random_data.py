@@ -1,14 +1,21 @@
 
 # Import Packages
 
-import os
-
 import math
 import random
 
 import pandas as pd
 import numpy as np
 
+from sklearn.model_selection import train_test_split
+
+from ml.data import process_data
+from ml.model import (
+    compute_model_metrics,
+    inference,
+    performance_on_categorical_slice,
+    train_model,
+)
 
 ############################### Helper Functions ############################
 
@@ -107,7 +114,7 @@ def get_target_values(row):
 
 
 
-############################### Main Function ###############################
+############################### Main Functions ##############################
 
 
 def random_data():
@@ -157,7 +164,80 @@ def random_data():
     return df
 
 
+def data_samples(data_values):
+    '''
+    Creates data and model for testing purposes.
+    '''
 
+    # Create Random Data
+    data = random_data()
+
+    if data_values == 'random_data':
+        return data
+
+    # Create Data Split
+    train, test = train_test_split(data, test_size=0.20, random_state=42)
+    
+    cat_features = [
+        'category_1',
+        'category_2',
+        'category_3',
+        'category_4',
+        'category_5',
+        'category_6'
+    ]
+
+    if data_values == 'process_training_data':
+        return train, cat_features
+
+    # Process Training Data
+    X_train, y_train, encoder, lb = process_data(
+    X=train, categorical_features=cat_features, label="target", 
+    training=True)
+
+    if data_values == 'model_data':
+        return X_train, y_train
+    
+    # Process Testing Data
+    X_test, y_test, _, _ = process_data(
+    X=test, categorical_features=cat_features, label="target",
+    training=False, encoder=encoder, lb=lb)
+
+    # Create ML Model
+    model = train_model(X_train, y_train)
+
+    if data_values == 'inference_data':
+        return X_test, model
+
+    # Create Model Inferences
+    preds = inference(model, X_test)
+
+    if data_values == 'metrics_data':
+        return y_test, preds
+
+    if data_values == 'slice_data':
+        return test, cat_features, encoder, lb, model
+
+    # Compute Model Metrics
+    precision, recall, fbeta = compute_model_metrics(y_test, preds)
+
+    if data_values == 'model_metrics':
+        return precision, recall, fbeta
+    
+    # Compute Categorical Slice Metrics
+    precision, recall, fbeta = performance_on_categorical_slice(
+            data = test, 
+            column_name = 'category_1', 
+            slice_value = 'Alpha',
+            categorical_features = cat_features, 
+            label = 'target',
+            encoder = encoder, 
+            lb = lb, 
+            model = model
+        )
+    
+    if data_values == 'slice_metrics':
+        return precision, recall, fbeta
 
 
 
